@@ -42,17 +42,12 @@ class CompileCommand {
 		this.args = this.sanitizeArgs(commands.slice(1));
 	}
 
-	getDisassembleCommand(outFile: string) {
-		let args = [
-			this.command,
-			"-g",
-			"-S",
-			"-masm=intel",
-			"-o",
-			outFile
-		].concat(this.args);
 
-		return this.getCommand(args);
+	getDisassembleCommand(outFile: string) {
+		// remove -o part
+		let fixedCmd = this._command.replace(/[\s]-o\s[^"\s]+/, '');
+		// now add necessary options to generate clean assembly
+		return fixedCmd + ' -g1 -S -masm=intel -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-dwarf2-cfi-asm -o "' + outFile + '"';
 	}
 
 	getPreprocessCommand(outFile: string) {
