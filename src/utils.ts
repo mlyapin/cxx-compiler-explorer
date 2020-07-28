@@ -58,14 +58,13 @@ export function resolvePath(path: string): string {
 
 	let variables: any = {
 		// the path of the folder opened in VS Code
-		workspaceFolder:
-			parsedWorkspacePath.dir + "/" + parsedWorkspacePath.name,
+		workspaceFolder: workspace.rootPath!,
 		// the name of the folder opened in VS Code without any slashes (/)
-		workspaceFolderBasename: parsedWorkspacePath.name,
+		workspaceFolderBasename: parsedWorkspacePath.base,
 		// the current opened file
 		file: path,
 		// the current opened file relative to workspaceFolder
-		relativeFile: Path.relative(parsedWorkspacePath.dir, path),
+		relativeFile: Path.relative(workspace.rootPath!, path),
 		// the current opened file's basename
 		fileBasename: parsedFilePath.base,
 		// the current opened file's basename with no file extension
