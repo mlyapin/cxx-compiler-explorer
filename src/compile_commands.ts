@@ -33,7 +33,7 @@ class CompileCommand {
 
 	process() {
 		const commands = (this._command.length
-			? this._command.split(" ")
+			? this._command.match(/[^"\s]*("(\\"|[^"])+")?/g)!
 			: this._arguments
 		).filter(arg => arg.length > 0);
 
