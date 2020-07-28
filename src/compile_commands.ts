@@ -75,13 +75,7 @@ class CompileCommand {
 	}
 
 	private getCommand(args: string[]) {
-		let command = "";
-
-		args.forEach(arg => {
-			command += arg + " ";
-		});
-
-		return command;
+		return args.join(' ');
 	}
 
 	private sanitizeArgs(args: string[]) {
