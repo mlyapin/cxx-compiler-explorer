@@ -229,13 +229,16 @@ export class CompileCommands {
 
 	private static execCompileCommand(compileInfo: CompileInfo) {
 		const command = compileInfo.command + ' ' + this.getExtraCompileArgs();
+		this.errorChannel.clear();
+		this.errorChannel.appendLine(command);
+		this.errorChannel.show();
 		const result = child_process.spawnSync(command, {
 			cwd: compileInfo.compilationDirectory,
 			encoding: "utf8",
 			shell: true
 		});
 
-		if (result.status) {
+		if (result.status || result.error) { // status can be null if compiler not found
 			const error = result.error
 				? result.error.message
 				: result.output
@@ -246,15 +249,10 @@ export class CompileCommands {
 				"Cannot compile " + compileInfo.srcUri.path
 			);
 
-			this.errorChannel.clear();
-			this.errorChannel.appendLine(compileInfo.command);
 			this.errorChannel.appendLine(error);
-			this.errorChannel.appendLine(
-				command[0] +
-					" returned with error code " +
-					result.status.valueOf()
+			this.errorChannel.appendLine("  failed with error code " +
+					(result.status ? result.status.toString() : "null")
 			);
-			this.errorChannel.show();
 
 			return false;
 		}
