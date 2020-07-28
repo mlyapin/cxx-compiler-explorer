@@ -310,7 +310,7 @@ export class CompileCommands {
 	private static getCompileCommandsPath() {
 		const compileCommandsPath =
 			workspace
-				.getConfiguration("compilerexplorer")
+				.getConfiguration("compilerexplorer", null)
 				.get<string>("compilationDirectory") + "/compile_commands.json";
 
 		return compileCommandsPath
