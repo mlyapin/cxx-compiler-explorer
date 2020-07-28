@@ -347,7 +347,7 @@ export class CompileCommands {
 		const relativePath = Path.relative(workspace.rootPath!, srcUri.path);
 		const dstUri = srcUri.with({
 			scheme: scheme,
-			path: this.outDir + relativePath.replace(/\//g, "@@") + ext
+			path: this.outDir + relativePath.replace(/\//g, '@') + ext
 		});
 
 		// Create Output directory if not present
