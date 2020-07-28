@@ -233,10 +233,11 @@ export class CompileCommands {
 	}
 
 	private static execCompileCommand(compileInfo: CompileInfo) {
-		const command = compileInfo.command.split(" ");
-		const result = child_process.spawnSync(command[0], command.slice(1), {
+		const command = compileInfo.command + ' ' + this.getExtraCompileArgs();
+		const result = child_process.spawnSync(command, {
 			cwd: compileInfo.compilationDirectory,
-			encoding: "utf8"
+			encoding: "utf8",
+			shell: true
 		});
 
 		if (result.status) {
