@@ -68,6 +68,8 @@
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
+		"webpack": "webpack --mode development",
+		"webpack-dev": "webpack --mode development --watch",
 		"compile": "tsc -p ./",
 		"watch": "tsc -watch -p ./",
 		"postinstall": "node ./node_modules/vscode/bin/install",
