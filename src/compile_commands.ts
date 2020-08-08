@@ -245,7 +245,9 @@ export class CompileCommands {
 			encoding: "utf8",
 			shell: true
 		});
-		this.errorChannel.appendLine(filtstdout.status.toString());
+		if (filtstdout.status !== null) {
+			this.errorChannel.appendLine(filtstdout.status.toString());
+		}
 
 		if (result.status || result.error) { // status can be null if compiler not found
 			const error = result.error
