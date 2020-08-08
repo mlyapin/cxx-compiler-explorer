@@ -1,18 +1,27 @@
 {
 	"name": "cxx-compiler-explorer",
-	"displayName": "C/C++ Compiler explorer",
-	"description": "Show Disassembly output to source relations",
+	"author": "Andreas Hollandt",
+	"displayName": "C++ Compiler explorer",
+	"description": "Show compiler-generated assembly code",
 	"version": "0.3.0",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Trass3r/cxx-compiler-explorer"
 	},
+	"bugs": {
+		"url": "https://github.com/Trass3r/cxx-compiler-explorer/issues"
+	},
+	"extensionKind": [
+		"ui",
+		"workspace"
+	],
 	"license": "MIT",
 	"publisher": "trass3r",
 	"engines": {
 		"vscode": "^1.23.0"
 	},
 	"categories": [
+		"Programming Languages",
 		"Other"
 	],
 	"activationEvents": [
