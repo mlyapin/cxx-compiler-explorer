@@ -5,9 +5,9 @@
 	"version": "0.3.0",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/harikrishnan94/cxx-compiler-explorer"
+		"url": "https://github.com/Trass3r/cxx-compiler-explorer"
 	},
-	"publisher": "harikrishnan94",
+	"publisher": "trass3r",
 	"engines": {
 		"vscode": "^1.23.0"
 	},
