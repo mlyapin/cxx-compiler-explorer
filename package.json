@@ -12,7 +12,6 @@
 		"url": "https://github.com/Trass3r/cxx-compiler-explorer/issues"
 	},
 	"extensionKind": [
-		"ui",
 		"workspace"
 	],
 	"license": "MIT",
