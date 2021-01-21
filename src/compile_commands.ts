@@ -56,19 +56,6 @@ class CompileCommand {
 		return this.getCommand(args);
 	}
 
-	getLLVMDisassembleCommand(outFile: string) {
-		let args = [
-			this.command,
-			"-g",
-			"-S",
-			"-emit-llvm",
-			"-o",
-			outFile
-		].concat(this.args);
-
-		return this.getCommand(args);
-	}
-
 	private getCommand(args: string[]) {
 		return args.join(' ');
 	}
@@ -115,7 +102,6 @@ export class CompileCommands {
 	private static errorChannel: OutputChannel;
 	private static compileCommands = new Map<string, CompileInfo>();
 	private static asmUriMap = new Map<string, Uri>();
-	private static llvmUriMap = new Map<string, Uri>();
 	private static preprocessUriMap = new Map<string, Uri>();
 	private static compileTimestamps = new Map<string, Date>();
 	private static outDir = resolvePath(
@@ -156,10 +142,6 @@ export class CompileCommands {
 		return this.asmUriMap.get(uri.path);
 	}
 
-	static getLLVMUri(uri: Uri) {
-		return this.llvmUriMap.get(uri.path);
-	}
-
 	static getPreprocessUri(uri: Uri) {
 		return this.preprocessUriMap.get(uri.path);
 	}
@@ -190,7 +172,6 @@ export class CompileCommands {
 
 		const srcUri = compileCommand.uri;
 		const asmUri = this.encodeAsmUri(srcUri);
-		const llvmUri = this.encodeLLVMUri(srcUri);
 		const preprocessUri = this.encodePreprocessUri(srcUri);
 
 		this.asmUriMap.set(srcUri.path, asmUri);
@@ -200,17 +181,6 @@ export class CompileCommands {
 				asmUri,
 				srcUri,
 				compileCommand.getDisassembleCommand(asmUri.path),
-				compileCommand.directory
-			)
-		);
-
-		this.llvmUriMap.set(srcUri.path, llvmUri);
-		this.compileCommands.set(
-			llvmUri.path,
-			new CompileInfo(
-				llvmUri,
-				srcUri,
-				compileCommand.getLLVMDisassembleCommand(llvmUri.path),
 				compileCommand.directory
 			)
 		);
@@ -332,9 +302,6 @@ export class CompileCommands {
 				case "disassembly":
 					return ".s";
 
-				case "llvm":
-					return ".ll";
-
 				default:
 					return (
 						".E" +
@@ -360,10 +327,6 @@ export class CompileCommands {
 
 	private static encodeAsmUri(uri: Uri): Uri {
 		return this.getUriForScheme(uri, "disassembly");
-	}
-
-	private static encodeLLVMUri(uri: Uri): Uri {
-		return this.getUriForScheme(uri, "llvm");
 	}
 
 	private static encodePreprocessUri(uri: Uri): Uri {

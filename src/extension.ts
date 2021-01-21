@@ -32,31 +32,32 @@ export function activate(context: ExtensionContext) {
 	function openAsmDocumentForEditor(srcEditor: TextEditor) {
 		let asmUri = CompileCommands.getAsmUri(srcEditor.document.uri);
 
-		if (asmUri) {
-			workspace.openTextDocument(asmUri).then(doc => {
-				window
-					.showTextDocument(doc, srcEditor.viewColumn! + 1, true)
-					.then(asmEditor => {
-						const decorator = new AsmDecorator(
-							srcEditor,
-							asmEditor,
-							provider
-						);
-						// dirty way to get decorations work after showing disassembly
-						setTimeout(
-							_ => decorator.updateSelection(srcEditor),
-							500
-						);
-					});
-			});
-
-			provider.notifyCompileArgsChange(asmUri);
-		} else {
+		if (!asmUri) {
 			window.showErrorMessage(
 				srcEditor.document.uri +
-					" is not found in compile_commands.json"
+				" is not found in compile_commands.json"
 			);
+			return;
 		}
+
+		workspace.openTextDocument(asmUri).then(doc => {
+			window
+				.showTextDocument(doc, srcEditor.viewColumn! + 1, true)
+				.then(asmEditor => {
+					const decorator = new AsmDecorator(
+						srcEditor,
+						asmEditor,
+						provider
+					);
+					// dirty way to get decorations work after showing disassembly
+					setTimeout(
+						_ => decorator.updateSelection(srcEditor),
+						500
+					);
+				});
+		});
+
+		provider.notifyCompileArgsChange(asmUri);
 	}
 
 	// register command that crafts an uri with the `disassembly` scheme,
