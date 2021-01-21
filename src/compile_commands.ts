@@ -208,17 +208,6 @@ export class CompileCommands {
 			shell: true
 		});
 
-		const filtcmd = 'echo "`c++filt -t < \'' + compileInfo.uri.fsPath + '\'`" > \'' + compileInfo.uri.fsPath + '\'';
-		this.errorChannel.appendLine(filtcmd);
-		const filtstdout = child_process.spawnSync(filtcmd, {
-			cwd: compileInfo.compilationDirectory,
-			encoding: "utf8",
-			shell: true
-		});
-		if (filtstdout.status !== null) {
-			this.errorChannel.appendLine(filtstdout.status.toString());
-		}
-
 		if (result.status || result.error) { // status can be null if compiler not found
 			const error = result.error
 				? result.error.message
@@ -236,6 +225,17 @@ export class CompileCommands {
 			);
 
 			return false;
+		}
+
+		const filtcmd = 'echo "`c++filt -t < \'' + compileInfo.uri.fsPath + '\'`" > \'' + compileInfo.uri.fsPath + '\'';
+		this.errorChannel.appendLine(filtcmd);
+		const filtstdout = child_process.spawnSync(filtcmd, {
+			cwd: compileInfo.compilationDirectory,
+			encoding: "utf8",
+			shell: true
+		});
+		if (filtstdout.status !== null) {
+			this.errorChannel.appendLine(filtstdout.status.toString());
 		}
 
 		this.updateCompileInfo(compileInfo);
