@@ -1,9 +1,6 @@
-.vscode/**
-.vscode-test/**
-out/test/**
-out/**/*.map
-src/**
-.gitignore
-tsconfig.json
-vsc-extension-quickstart.md
-tslint.json
+*
+*/**
+!out/*.js
+!package.json
+!README.md
+!node_modules/json2typescript
