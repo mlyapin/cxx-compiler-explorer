@@ -47,7 +47,7 @@ class CompileCommand {
 		// remove -o part
 		let fixedCmd = this._command.replace(/[\s]-o\s[^"\s]+/, '');
 		// now add necessary options to generate clean assembly
-		return fixedCmd + ' -g1 -S -masm=intel -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-dwarf2-cfi-asm -o "' + outFile + '"';
+		return fixedCmd + ' -g1 -S -masm=intel -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-dwarf2-cfi-asm -Wno-error -o "' + outFile + '"';
 	}
 
 	getPreprocessCommand(outFile: string) {
