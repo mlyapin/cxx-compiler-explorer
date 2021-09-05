@@ -221,7 +221,6 @@ export class CompileCommands {
 		const command = compileInfo.command + ' ' + this.getExtraCompileArgs();
 		this.errorChannel.clear();
 		this.errorChannel.appendLine(command);
-		this.errorChannel.show();
 		const result = child_process.spawnSync(command, {
 			cwd: compileInfo.compilationDirectory,
 			encoding: "utf8",
