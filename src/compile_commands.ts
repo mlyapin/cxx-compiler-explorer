@@ -49,11 +49,10 @@ class CompileCommand {
 	getDisassembleCommand(outFile: string) {
 		// TODO: Actually, need to filter out the source file from arguments and append it here.
 		// Will do it later.
+		// TODO: In case of x86, make an option to choose asm syntax.
 		const genArgs: string[] = [
 			"-g1",
 			"-S",
-			// TODO: Some weirdos prefer ATT. Ahem.
-			"-masm=intel",
 			// TODO: Those are C++ specific. Shouldn't use them for C.
 			"-fno-unwind-tables",
 			"-fno-asynchronous-unwind-tables",
