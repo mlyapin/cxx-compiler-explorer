@@ -47,10 +47,28 @@ class CompileCommand {
 
 
 	getDisassembleCommand(outFile: string) {
-		// remove -o part
-		let fixedCmd = this._command.replace(/[\s]-o\s[^"\s]+/, '');
-		// now add necessary options to generate clean assembly
-		return fixedCmd + ' -g1 -S -masm=intel -fno-unwind-tables -fno-asynchronous-unwind-tables -fno-dwarf2-cfi-asm -Wno-error -o "' + outFile + '"';
+		// TODO: Actually, need to filter out the source file from arguments and append it here.
+		// Will do it later.
+		const genArgs: string[] = [
+			"-g1",
+			"-S",
+			// TODO: Some weirdos prefer ATT. Ahem.
+			"-masm=intel",
+			// TODO: Those are C++ specific. Shouldn't use them for C.
+			"-fno-unwind-tables",
+			"-fno-asynchronous-unwind-tables",
+			"-fno-dwarf2-cfi-asm",
+			"-Wno-error",
+		];
+		const outArgs: string[] = ["-o", outFile];
+
+		let fullCommand: string[] = [this.command].concat(
+			this.args,
+			genArgs,
+			outArgs
+		);
+
+		return fullCommand.join(" ");
 	}
 
 	getPreprocessCommand(outFile: string) {
