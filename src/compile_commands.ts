@@ -292,7 +292,7 @@ export class CompileCommands {
 
 	private static createOutputDirectory() {
 		if (!fs.existsSync(this.outDir)) {
-			fs.mkdirSync(this.outDir);
+			fs.mkdirSync(this.outDir, { recursive: true });
 		}
 	}
 
