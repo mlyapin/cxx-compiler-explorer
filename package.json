@@ -43,10 +43,10 @@
 			{
 				"title": "C++ Compiler Explorer",
 				"properties": {
-					"compilerexplorer.compilationDirectory": {
+					"compilerexplorer.compileCommandsPath": {
 						"type": "string",
-						"default": "${workspaceFolder}",
-						"description": "Location of compile_commands.json file",
+						"default": "",
+						"description": "Location of compile_commands.json file. If empty, try to search in the current directory and upwards.",
 						"scope": "resource"
 					},
 					"compilerexplorer.dimUnusedSourceLines": {

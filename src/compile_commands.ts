@@ -13,6 +13,9 @@ import {
 	ValueCheckingMode
 } from "json2typescript";
 
+// TODO: Make configurable?
+const cdbFilename = "compile_commands.json"
+
 @JsonObject("CompileCommand")
 class CompileCommand {
 	@JsonProperty("file", String)
@@ -279,15 +282,58 @@ export class CompileCommands {
 		) as CompileCommand[];
 	}
 
-	private static getCompileCommandsPath() {
-		const compileCommandsPath =
-			workspace
-				.getConfiguration("compilerexplorer", null)
-				.get<string>("compilationDirectory") + "/compile_commands.json";
+	private static getCompileCommandsPathFromSettings(): string | undefined {
+		return workspace.getConfiguration("compilerexplorer", null)
+						.get<string>("compileCommandsPath");
+	}
 
-		return compileCommandsPath
-			? resolvePath(compileCommandsPath)
-			: resolvePath("${workspaceFolder}/compile_commands.json");
+	private static searchCdbRecursive(startDir: string): string | undefined {
+		let resultCdb: string | undefined = undefined;
+		let currentDir: string | undefined = resolvePath(startDir);
+
+		if (currentDir.charAt(currentDir.length - 1) == Path.sep) {
+			currentDir = currentDir.slice(0, currentDir.length - 1);
+		}
+
+		while(currentDir != undefined && resultCdb == undefined) {
+			const currentCdb = currentDir + Path.sep + cdbFilename
+			let lastIndex;
+
+			if (fs.existsSync(currentCdb)) {
+				resultCdb = currentCdb;
+			}
+
+			lastIndex = currentDir.lastIndexOf(Path.sep);
+			const notFound: Boolean = lastIndex == -1;
+			const rootDir: Boolean = lastIndex == 1;
+			if (notFound || rootDir) {
+				currentDir = undefined;
+			} else {
+				currentDir = currentDir.slice(0, lastIndex);
+			}
+		}
+
+		return resultCdb;
+	}
+
+	private static getCompileCommandsPath(): string {
+		let cdbPath = this.getCompileCommandsPathFromSettings();
+
+		if (cdbPath != undefined && cdbPath.length != 0) {
+			cdbPath = resolvePath(cdbPath);
+		}
+
+		if (cdbPath == undefined || cdbPath.length == 0) {
+			// TODO: Make configurable.
+			cdbPath = this.searchCdbRecursive("${workspaceFolder}");
+		}
+
+		if (cdbPath == undefined) {
+			// TODO: Return an error instead.
+			cdbPath = "";
+		}
+
+		return cdbPath;
 	}
 
 	private static createOutputDirectory() {
